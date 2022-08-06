@@ -1,8 +1,8 @@
-def deal(deck, x):
+def deal(deck):
     import random as r
     userCards = []
     dealerCards = []
-    for i in range(0, x):
+    for i in range(0, 4):
         num = r.choice(list(deck))
         if i % 2 == 0:
             userCards.append(deck.pop(num))
@@ -40,14 +40,13 @@ def calcTotal(cards):
             total += 9
         else:
             total += 10
-    return total
-
-def changeAce(cards, total):
-    for i in range(0, len(cards)):
-        card = cards[i].split()
-        if card[0] == "Ace":
-            total -= 10
-            break
+    if total > 21:
+        for i in range(0, len(cards)):
+            card = cards[i].split()
+            if card[0] == "Ace":
+                total -= 10
+            if total > 21:
+                break
     return total
 
 def uChoice(deck, userCards, uTotal):
@@ -61,7 +60,6 @@ def uChoice(deck, userCards, uTotal):
             print(f"\n  You were dealt the {nextUserCard}.")
             userCards.append(nextUserCard)
             uTotal = calcTotal(userCards)
-            print(f"  Total: {uTotal}")
         else:
             break
     return uTotal
@@ -72,7 +70,6 @@ def dChoice(deck, dealerCards, uTotal, dTotal):
             print(f"\n  The dealer was dealt the {nextDealerCard}.")
             dealerCards.append(nextDealerCard)
             dTotal = calcTotal(dealerCards)
-            print(f"  Dealer total: {dTotal}")
     return dTotal
 
 def main():
@@ -132,29 +129,21 @@ def main():
     "51": "Queen of Diamonds",
     "52": "King of Diamonds",
     }
-    userCards, dealerCards = deal(deck, 4)
+    userCards, dealerCards = deal(deck)
     print(f"\n  You have been dealt the {userCards[0]} & the {userCards[1]}.")
     uTotal = calcTotal(userCards)
-    print(f"  Total: {uTotal}")
     dTotal = calcTotal(dealerCards)
 
     uTotal = uChoice(deck, userCards, uTotal)
     
     if uTotal > 21:
-        uTotal = changeAce(userCards, uTotal)
-        uTotal = uChoice(deck, userCards, uTotal)
-        if uTotal > 21:
-            print("  You busted.")
-            result = "lost"
+        print("  You busted.")
+        result = "lost"
     else: 
         print(f"\n  The dealer has {dealerCards[0]} & the {dealerCards[1]}.")
-        print(f"  Dealer total: {dTotal}")
         dTotal = dChoice(deck, dealerCards, uTotal, dTotal)
     if dTotal > 21:
-        dTotal = changeAce(dealerCards, dTotal)
-        dTotal = dChoice(deck, dealerCards, uTotal, dTotal)
-        if dTotal > 21:
-            print("  The dealer busted.")
+        print("  The dealer busted.")
         result = "won"
     elif dTotal == uTotal:
         result = "tied"
@@ -165,4 +154,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+       
