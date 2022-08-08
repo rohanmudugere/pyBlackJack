@@ -45,7 +45,7 @@ def calcTotal(cards):
             card = cards[i].split()
             if card[0] == "Ace":
                 total -= 10
-            if total > 21:
+            if total < 21:
                 break
     return total
 
@@ -129,6 +129,7 @@ def main():
     "51": "Queen of Diamonds",
     "52": "King of Diamonds",
     }
+
     userCards, dealerCards = deal(deck)
     print(f"\n  You have been dealt the {userCards[0]} & the {userCards[1]}.")
     uTotal = calcTotal(userCards)
@@ -142,6 +143,7 @@ def main():
     else: 
         print(f"\n  The dealer has {dealerCards[0]} & the {dealerCards[1]}.")
         dTotal = dChoice(deck, dealerCards, uTotal, dTotal)
+        
     if dTotal > 21:
         print("  The dealer busted.")
         result = "won"
@@ -154,4 +156,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-       
+    
